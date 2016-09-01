@@ -8,11 +8,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            O intent-filter pode ser usada para disponibilizar a activity responda a
+            eventos eternos do android ou de outras aplicações.
+            a chamada também pode ser usada internamente na aplicação
+          -->
+
+        <activity android:name=".SecondActivity">
+            <intent-filter>
+                <action android:name="io.github.lucassabreu.aulacodesquad.ACTION_SECOND_ACTIVITY" />
             </intent-filter>
         </activity>
     </application>
