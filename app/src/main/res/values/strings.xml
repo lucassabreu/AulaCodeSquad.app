@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Aula CodeSquad</string>
+    <string name="primeiro_texto">Android na prática no Code-Squad</string>
+    <string name="segundo_texto">Meu nome</string>
+    <string name="primeiro_botao">Botão 1</string>
+    <string name="segundo_botao">Botão 2</string>
+    <string name="terceiro_botao">Botão 3</string>
+    <string name="terceiro_texto">Texto 3</string>
 </resources>

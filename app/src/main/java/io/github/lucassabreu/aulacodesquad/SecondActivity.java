@@ -21,12 +21,14 @@ public class SecondActivity extends AppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        /*
         Intent in = getIntent();
         // lendo um valor passado via intent
         int id = in.getExtras().getInt("id");
         Toast.makeText(this, "ID: " + id, Toast.LENGTH_SHORT).show();
 
         somaResultado(id);
+        */
     }
 
     private void somaResultado (int id) {

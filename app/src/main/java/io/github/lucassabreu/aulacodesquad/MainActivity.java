@@ -5,11 +5,16 @@ import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "MainActivity";
+
+    private Button primeiroButton;
+    private Button segundoButton;
 
     /*
      * O ciclo de vida de uma activity começa no onCreate, neste evento a
@@ -65,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("has been created for the first time, args == null");
         else
             Log.d("has been restart (orientation), args != null");
+
+        primeiroButton = (Button) findViewById(R.id.button_primeiro);
+        segundoButton = (Button) findViewById(R.id.button_segundo);
     }
 
     @Override
@@ -82,20 +90,22 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.d("has been restart (orientation), args != null");
 
+        primeiroButton.setOnClickListener(this);
+
         /*
          * chamada para outra intent
          */
 
         // start by class
-        Intent in = new Intent(this, SecondActivity.class);
+        //Intent in = new Intent(this, SecondActivity.class);
 
         // colocando valores no extra é possível passar valores para o
         // destino da intent
-        in.putExtra("id", 1);
+        //in.putExtra("id", 1);
 
         // chama a activity esperabdi um retorno, é necessário passar um
         // requestCode (no caso 8) para identificar os retornos no onActivityResult
-        startActivityForResult(in, 8);
+        //startActivityForResult(in, 8);
 
         // apenas inicia a activity
         // startActivity(in);
@@ -104,6 +114,29 @@ public class MainActivity extends AppCompatActivity {
         // start by action
         // Intent in = new Intent(this, "io.github.lucassabreu.aulacodesquad.ACTION_SECOND_ACTIVITY");
         // startActivity(in);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(this, "Botão clicado", Toast.LENGTH_SHORT).show();
+
+        switch(view.getId()) {
+            case R.id.button_primeiro:
+                onPrimeiroBotaoClicado();
+                break;
+            case R.id.button_segundo:
+                onSegundoBotaoClicado();
+                break;
+        }
+    }
+
+    private void onPrimeiroBotaoClicado(){
+        Intent in = new Intent(this, SecondActivity.class);
+        startActivity(in);
+    }
+
+    private void onSegundoBotaoClicado(){
+        Toast.makeText(this, "Segundo botão clicado", Toast.LENGTH_SHORT).show();
     }
 
     /**
