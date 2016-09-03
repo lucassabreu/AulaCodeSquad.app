@@ -1,20 +1,14 @@
 package io.github.lucassabreu.aulacodesquad;
 
-import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
-
-    private Button primeiroButton;
-    private Button segundoButton;
 
     /*
      * O ciclo de vida de uma activity começa no onCreate, neste evento a
@@ -65,108 +59,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate");
-        if (savedInstanceState == null)
-            Log.d("has been created for the first time, args == null");
-        else
-            Log.d("has been restart (orientation), args != null");
-
-        primeiroButton = (Button) findViewById(R.id.button_primeiro);
-        segundoButton = (Button) findViewById(R.id.button_segundo);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState, persistentState);
-        Log.d(TAG, "onPostCreate");
-        if (savedInstanceState == null)
-            Log.d("has been called for the first time, args == null");
-        else
-            Log.d("has been restart (orientation), args != null");
-
-        primeiroButton.setOnClickListener(this);
-
-        /*
-         * chamada para outra intent
-         */
-
-        // start by class
-        //Intent in = new Intent(this, SecondActivity.class);
-
-        // colocando valores no extra é possível passar valores para o
-        // destino da intent
-        //in.putExtra("id", 1);
-
-        // chama a activity esperabdi um retorno, é necessário passar um
-        // requestCode (no caso 8) para identificar os retornos no onActivityResult
-        //startActivityForResult(in, 8);
-
-        // apenas inicia a activity
-        // startActivity(in);
-
-
-        // start by action
-        // Intent in = new Intent(this, "io.github.lucassabreu.aulacodesquad.ACTION_SECOND_ACTIVITY");
-        // startActivity(in);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(this, "Botão clicado", Toast.LENGTH_SHORT).show();
-
-        switch(view.getId()) {
-            case R.id.button_primeiro:
-                onPrimeiroBotaoClicado();
-                break;
-            case R.id.button_segundo:
-                onSegundoBotaoClicado();
-                break;
-        }
-    }
-
-    private void onPrimeiroBotaoClicado(){
-        Intent in = new Intent(this, SecondActivity.class);
-        startActivity(in);
-    }
-
-    private void onSegundoBotaoClicado(){
-        Toast.makeText(this, "Segundo botão clicado", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Toma uma atitude sobre o retorno de uma intent
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == 8 && resultCode == RESULT_OK) {
-            final int idSomado = data.getExtras().getInt("soma");
-            Toast.makeText(this, "soma: " + idSomado, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 }
