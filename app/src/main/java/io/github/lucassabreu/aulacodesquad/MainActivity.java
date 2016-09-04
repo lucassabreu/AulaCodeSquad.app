@@ -13,19 +13,21 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.util.List;
+
 import io.github.lucassabreu.aulacodesquad.fragment.SegundoFragment;
+import io.github.lucassabreu.aulacodesquad.model.User;
 import io.github.lucassabreu.aulacodesquad.service.PrimeiraTarefa;
 import io.github.lucassabreu.aulacodesquad.service.Servico;
+import io.github.lucassabreu.aulacodesquad.service.UserService;
 
 public class MainActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     public static final String TAG = "MainActivity";
-    public static final String FRAGMENT_SEGUNDO_TAG = "SegundoFragment";
 
     private Button mButton;
-    private PrimeiraTarefa mPrimeiraTarefa;
-    private PrimeiroBroadcast mPrimeiroBroadcast;
+    private UserBroadcast mBroadcast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,63 +39,44 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if(savedInstanceState == null)
-            replace();
         mButton.setOnClickListener(this);
-    }
-
-    /*
-     * É importante manter um gerenciamento das tasks dentro do Activity life cycle,
-     * pois mesmo que o usuário saia da sua activity as Thread e outros serviços
-     * continuam rodando mesmo assim
-     */
-
-    public void startTasks() {
-        cancelTasks();
-        mPrimeiraTarefa = new PrimeiraTarefa(this);
-        mPrimeiraTarefa.execute(100);
-    }
-
-    public void cancelTasks() {
-        if (mPrimeiraTarefa != null)
-            mPrimeiraTarefa.cancel(true);
-        mPrimeiraTarefa = null;
     }
 
     @Override
     public void onClick(View view) {
-        // startTasks();
-        mPrimeiroBroadcast = new PrimeiroBroadcast();
-        registerReceiver(mPrimeiroBroadcast, new IntentFilter(Servico.AULA_CODESQUAD));
+        if (mBroadcast == null) {
+            mBroadcast = new UserBroadcast();
+            registerReceiver(mBroadcast, new IntentFilter(UserService.ACTION_BUSCA_USUARIOS));
+        }
 
-        Intent intent = new Intent(this, Servico.class);
-        intent.getExtras().putInt("inicial", 87);
+        Intent intent = new Intent(this, UserService.class);
         startService(intent);
     }
 
     @Override
     protected void onDestroy() {
-        cancelTasks();
-        if (mPrimeiroBroadcast != null)
-            unregisterReceiver(mPrimeiroBroadcast);
         super.onDestroy();
+        if (mBroadcast != null)
+            unregisterReceiver(mBroadcast);
     }
 
-    private void replace() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frameLayout_content,
-                         SegundoFragment.newInstance("Android do jeito certo"), FRAGMENT_SEGUNDO_TAG)
-                .commit();
-    }
-
-    private class PrimeiroBroadcast extends BroadcastReceiver {
-
+    private class UserBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context,
-                    "Resutaldo Serviço: " + intent.getExtras().getInt("resultado"),
-                    Toast.LENGTH_SHORT).show();
+            if (intent.getExtras().containsKey("error")) {
+                Toast.makeText(context, "Algum erro aconteceu: " +
+                        intent.getStringExtra("error"), Toast.LENGTH_SHORT).show();
+            } else {
+                List<User> usuarios =
+                    intent.getExtras().getParcelableArrayList("usuarios");
+
+                String userName = "";
+                for(User u : usuarios)
+                    userName += u.getNome() + " ";
+
+                Toast.makeText(context, "Usuarios: " + userName, Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 }

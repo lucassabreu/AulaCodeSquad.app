@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.lucassabreu.aulacodesquad">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,6 +41,11 @@
                 <action android:name="io.github.lucassabreu.aulacodesquad.BROADCAST_DATA" />
             </intent-filter>
         </service>
+
+        <service android:name=".service.UserService">
+
+        </service>
+
     </application>
 
 </manifest>
