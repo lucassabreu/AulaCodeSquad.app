@@ -28,6 +28,17 @@
                 <action android:name="io.github.lucassabreu.aulacodesquad.ACTION_SECOND_ACTIVITY" />
             </intent-filter>
         </activity>
+
+        <!--
+            android:exported indica se o serviço pode ser ouvido de fora
+            da aplicação ou não
+        -->
+        <service android:name=".service.Servico"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="io.github.lucassabreu.aulacodesquad.BROADCAST_DATA" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
