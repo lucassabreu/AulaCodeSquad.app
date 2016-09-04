@@ -5,59 +5,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
-public class MainActivity extends AppCompatActivity {
+import io.github.lucassabreu.aulacodesquad.fragment.SegundoFragment;
+
+public class MainActivity extends AppCompatActivity
+    implements View.OnClickListener {
 
     public static final String TAG = "MainActivity";
+    public static final String FRAGMENT_SEGUNDO_TAG = "SegundoFragment";
 
-    /*
-     * O ciclo de vida de uma activity começa no onCreate, neste evento a
-     * activity é inicializada. É recomendado inicializar os componentes de tela
-     * neste evento.
-     *
-     * Após a chamada do onCreate é feita a chamada do onStart, onde a activity
-     * ainda não é visivel para o cliente, nesse momento podem ser inicializados
-     * alguns controles da activity
-     *
-     * Em seguida é chamado o evento onPostCreate, nesse momento entende-se que
-     * a activity já esta inicializada e visível para o usuário, é interessante
-     * inicializar threads e outros serviços semelhantes nesse evento.
-     *
-     * O onResume vem em seguida, indicando que a aplicação/activity está disponível
-     * ou retornou para ela. Sempre que o usuário sair da activity e retornar seram
-     * chamados apenas os eventos onStart e onResume, no onResume a activity já esta
-     * visível. Quando volta do onStop o onResume é chamado, as tarefas/serviços
-     * que foram parados no onStop
-     *
-     * onPause é chamada quando a aplicação é pausada, inicialmente de forma temporária,
-     * ainda não esta "invisível", mas irá se tornar
-     *
-     * Dando continuidade a pausa é chamado o evento onStop, sendo a contraparte do
-     * onStart, nesse momento a activity já não esta mais visível. É importante parar
-     * serviços que não tenham necessidade de continuar rodando sejam paradas nesse
-     * momento, pois embora a aplicação não esteja disponível ela ainda esta rodando
-     * em plano de fundo
-     *
-     * Quando a aplicação for ser destruida (retirada da memória) é chamado o evento
-     * onDestroy, eventuais recursos que ainda estejam disponível seria interessante
-     * terminá-los nesse momento que não sejam mais necessárias, mas que não
-     * necessáriamente serão terminados automaticamente.
-     *
-     * *****
-     *
-     * Quando ouver mudança de orientação no android (paisagem/retrato) o life cycle
-     * é parcialmente reinicializado, com a diferença que o parametro
-     * savedInstanceState estará alimentado, indicando que houve uma mudança de
-     * estado que forçou a recriação da activity. Todos os eventos serão chamadas
-     * na mudança de orientação, inclusive o onDestroy. Outra situação que pode
-     * disparar esse processo é o sistema android eliminar a activity para fins de
-     * uso de memória
-     *
-     */
+    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mButton = (Button) findViewById(R.id.button_increment);
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if(savedInstanceState == null)
+            replace();
+        mButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        SegundoFragment segundo = (SegundoFragment) getSupportFragmentManager().
+                findFragmentByTag(FRAGMENT_SEGUNDO_TAG);
+        segundo.increment();
+        Log.d(TAG, "increment button");
+    }
+
+    private void replace() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout_content,
+                         SegundoFragment.newInstance("Android do jeito certo"), FRAGMENT_SEGUNDO_TAG)
+                .commit();
     }
 }

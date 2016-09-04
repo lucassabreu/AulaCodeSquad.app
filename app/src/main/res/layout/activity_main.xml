@@ -10,7 +10,20 @@
     <fragment
         android:name="io.github.lucassabreu.aulacodesquad.fragment.PrimeiroFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="150dp"
         tools:layout="@layout/fragment_primeiro"
-        android:id="@+id/fragment_primeiro" />
+        android:id="@+id/fragment_primeiro"
+        />
+
+    <Button
+        android:id="@+id/button_increment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_increment"
+        />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 </LinearLayout>

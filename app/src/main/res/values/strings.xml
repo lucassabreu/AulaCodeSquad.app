@@ -7,4 +7,5 @@
     <string name="terceiro_botao">Botão 3</string>
     <string name="terceiro_texto">Texto 3</string>
     <string name="botao_fragment">Botão Fragment</string>
+    <string name="button_increment">Botão Incremento</string>
 </resources>
