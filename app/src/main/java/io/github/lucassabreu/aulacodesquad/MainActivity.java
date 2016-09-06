@@ -4,21 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.util.List;
 
-import io.github.lucassabreu.aulacodesquad.fragment.SegundoFragment;
+import io.github.lucassabreu.aulacodesquad.db.UserManager;
 import io.github.lucassabreu.aulacodesquad.model.User;
-import io.github.lucassabreu.aulacodesquad.service.PrimeiraTarefa;
-import io.github.lucassabreu.aulacodesquad.service.Servico;
 import io.github.lucassabreu.aulacodesquad.service.UserService;
 
 public class MainActivity extends AppCompatActivity
@@ -44,13 +39,25 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if (mBroadcast == null) {
-            mBroadcast = new UserBroadcast();
-            registerReceiver(mBroadcast, new IntentFilter(UserService.ACTION_BUSCA_USUARIOS));
+        testDb();
+    }
+
+    private void testDb() {
+        UserManager userManager = new UserManager(this, true);
+        List<User> users = userManager.getUsers();
+
+        for(User u : users) {
+            System.out.println("ID:" + u.getId());
+            System.out.println("NOME: " + u.getNome());
+            System.out.println("CURSO: " + u.getCurso());
         }
 
-        Intent intent = new Intent(this, UserService.class);
-        startService(intent);
+        /*
+        User user = new User();
+        user.setNome("Leonardo");
+        user.setCurso("Rosseto");
+        userManager.save(user);
+         */
     }
 
     @Override
